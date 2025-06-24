@@ -81,7 +81,7 @@ export default function ApprovalFormSection() {
             animate={{ opacity: 1, y: 0 }}
             className="text-green-600 text-center font-semibold mt-2"
           >
-            Escolha enviada com sucesso! Obrigado :)
+            Ótima escolha, Dra. Gabriela! Obrigado :)
           </motion.div>
         )}
         {error && (
