@@ -97,6 +97,7 @@ export default function LogoOptionsSection({
 								</svg>
 							</button>
 						</div>
+						<div className="mb-2 text-[#184A5A] font-semibold text-lg">Logo {i + 1}</div>
 						<button
 							onClick={() => onChoose(i)}
 							className={`px-6 py-2 rounded-full font-semibold text-white bg-[#184A5A] shadow-md transition-transform duration-200 hover:scale-105 ${

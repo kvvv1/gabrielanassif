@@ -4,7 +4,7 @@ import { supabase } from "../lib/supabaseClient";
 
 const palettes = ["Clean Família", "Saúde & Acolhimento", "Leveza & Delicadeza"];
 const fonts = ["Montserrat & Lato", "Poppins & Open Sans", "Quicksand & Nunito"];
-const logos = ["Logo 1", "Logo 2", "Logo 3"];
+const logos = ["Logo 1", "Logo 2", "Logo 3", "Logo 4"];
 
 export default function ApprovalFormSection() {
   const [success, setSuccess] = useState(false);
