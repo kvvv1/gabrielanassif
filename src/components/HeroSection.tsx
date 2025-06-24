@@ -1,4 +1,4 @@
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 export default function HeroSection({ onCTAClick }: { onCTAClick: () => void }) {
