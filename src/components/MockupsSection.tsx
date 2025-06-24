@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const logoMockups = [
   [
@@ -34,6 +35,17 @@ export default function MockupsSection({
 }) {
   const mockups =
     selectedLogo !== null ? logoMockups[selectedLogo] : [];
+  const [openImgIdx, setOpenImgIdx] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (openImgIdx === null) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenImgIdx(null);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [openImgIdx]);
+
   return (
     <motion.section
       id="mockups"
@@ -71,19 +83,65 @@ export default function MockupsSection({
               transition={{ duration: 0.7, delay: i * 0.1 }}
               className="overflow-hidden rounded-xl shadow-lg bg-gray-50 group flex flex-col"
             >
-              <div className="flex-1 flex items-center justify-center p-3 sm:p-4 md:p-5">
+              <div className="flex-1 flex items-center justify-center p-3 sm:p-4 md:p-5 relative">
                 <img
                   src={m.src}
                   alt={m.alt}
-                  className="w-full h-36 xs:h-40 sm:h-44 md:h-48 object-contain transition-transform duration-300 group-hover:scale-105"
+                  className="w-full h-36 xs:h-40 sm:h-44 md:h-48 object-contain transition-transform duration-300 group-hover:scale-105 cursor-pointer"
                   loading="lazy"
+                  onClick={() => setOpenImgIdx(i)}
+                  tabIndex={0}
+                  aria-label={`Ampliar ${m.alt}`}
                 />
+                <button
+                  onClick={() => setOpenImgIdx(i)}
+                  className="absolute bottom-2 right-2 bg-white/80 hover:bg-white text-[#184A5A] p-2 rounded-full shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#184A5A] transition"
+                  aria-label={`Ver ${m.alt} ampliada`}
+                  tabIndex={0}
+                  type="button"
+                >
+                  <svg width="22" height="22" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" stroke="#184A5A" strokeWidth="2" />
+                    <line x1="16.5" y1="16.5" x2="21" y2="21" stroke="#184A5A" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                </button>
               </div>
               <div className="p-2 text-center text-xs xs:text-sm text-gray-600 bg-white">
                 {m.alt}
               </div>
             </motion.div>
           ))}
+        </div>
+      )}
+      {openImgIdx !== null && (
+        <div
+          className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fadeIn"
+          role="dialog"
+          aria-modal="true"
+          tabIndex={-1}
+          onClick={() => setOpenImgIdx(null)}
+        >
+          <div
+            className="relative max-w-full max-h-full p-2"
+            onClick={e => e.stopPropagation()}
+          >
+            <img
+              src={mockups[openImgIdx].src}
+              alt={mockups[openImgIdx].alt + ' ampliada'}
+              className="w-auto h-[80vh] max-w-[90vw] rounded-2xl shadow-2xl border-4 border-white/90 bg-white/60"
+            />
+            <button
+              onClick={() => setOpenImgIdx(null)}
+              className="absolute top-2 right-2 bg-white/90 hover:bg-white text-[#184A5A] p-2 rounded-full shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-[#184A5A]"
+              aria-label="Fechar imagem ampliada"
+              type="button"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <line x1="5" y1="5" x2="15" y2="15" stroke="#184A5A" strokeWidth="2" strokeLinecap="round" />
+                <line x1="15" y1="5" x2="5" y2="15" stroke="#184A5A" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
         </div>
       )}
     </motion.section>
